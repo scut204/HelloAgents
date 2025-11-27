@@ -1,0 +1,18 @@
+# 忽略Python虚拟环境
+venv/
+.venv/
+.env
+
+# 忽略IDE配置文件
+.vscode/
+.idea/
+
+# 忽略缓存文件
+__pycache__/
+*.py[cod]
+
+# 忽略输出目录
+output/
+
+uv.lock 
+
