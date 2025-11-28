@@ -14,6 +14,8 @@ HelloAgents框架的内置工具集合，包括：
 - GAIAEvaluationTool: GAIA评估工具（第12章）
 - LLMJudgeTool: LLM Judge评估工具（第12章）
 - WinRateTool: Win Rate评估工具（第12章）
+- CodeSandbox: 安全的 Python 代码沙箱执行器
+- ToolBridge: 工具桥接器，将工具转换为可调用函数
 """
 
 from .search_tool import SearchTool
@@ -27,6 +29,8 @@ from .bfcl_evaluation_tool import BFCLEvaluationTool
 from .gaia_evaluation_tool import GAIAEvaluationTool
 from .llm_judge_tool import LLMJudgeTool
 from .win_rate_tool import WinRateTool
+from .code_sandbox import CodeSandbox, ExecutionResult, SandboxConfig
+from .tool_bridge import ToolBridge, ToolNamespace, ToolCallRecord
 
 __all__ = [
     "SearchTool",
@@ -42,4 +46,11 @@ __all__ = [
     "GAIAEvaluationTool",
     "LLMJudgeTool",
     "WinRateTool",
+    # Programmatic Tool Calling 组件
+    "CodeSandbox",
+    "ExecutionResult",
+    "SandboxConfig",
+    "ToolBridge",
+    "ToolNamespace",
+    "ToolCallRecord",
 ]
