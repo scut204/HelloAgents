@@ -17,6 +17,7 @@ SUPPORTED_PROVIDERS = Literal[
     "ollama",
     "vllm",
     "local",
+    "zenmux",
     "auto",
     "custom",
 ]
@@ -96,6 +97,8 @@ class HelloAgentsLLM:
         4. 默认返回通用配置
         """
         # 1. 检查特定提供商的环境变量
+        if os.getenv("ZENMUX_API_KEY"):
+            return "zenmux"
         if os.getenv("OPENAI_API_KEY"):
             return "openai"
         if os.getenv("DEEPSEEK_API_KEY"):
@@ -136,6 +139,8 @@ class HelloAgentsLLM:
         actual_base_url = base_url or os.getenv("LLM_BASE_URL")
         if actual_base_url:
             base_url_lower = actual_base_url.lower()
+            if "zenmux.ai" in base_url_lower:
+                return "zenmux"
             if "api.openai.com" in base_url_lower:
                 return "openai"
             elif "api.deepseek.com" in base_url_lower:
@@ -173,7 +178,12 @@ class HelloAgentsLLM:
 
     def _resolve_credentials(self, api_key: Optional[str], base_url: Optional[str]) -> tuple[str, str]:
         """根据provider解析API密钥和base_url"""
-        if self.provider == "openai":
+        if self.provider == "zenmux":
+            resolved_api_key = api_key or os.getenv("ZENMUX_API_KEY") or os.getenv("LLM_API_KEY")
+            resolved_base_url = base_url or os.getenv("LLM_BASE_URL") or "https://zenmux.ai/api/v1"
+            return resolved_api_key, resolved_base_url
+
+        elif self.provider == "openai":
             resolved_api_key = api_key or os.getenv("OPENAI_API_KEY") or os.getenv("LLM_API_KEY")
             resolved_base_url = base_url or os.getenv("LLM_BASE_URL") or "https://api.openai.com/v1"
             return resolved_api_key, resolved_base_url
@@ -239,7 +249,9 @@ class HelloAgentsLLM:
     
     def _get_default_model(self) -> str:
         """获取默认模型"""
-        if self.provider == "openai":
+        if self.provider == "zenmux":
+            return "openai/gpt-4o"  # ZenMux 使用 provider/model-name 格式
+        elif self.provider == "openai":
             return "gpt-3.5-turbo"
         elif self.provider == "deepseek":
             return "deepseek-chat"
@@ -263,7 +275,9 @@ class HelloAgentsLLM:
             # auto或其他情况：根据base_url智能推断默认模型
             base_url = os.getenv("LLM_BASE_URL", "")
             base_url_lower = base_url.lower()
-            if "modelscope" in base_url_lower:
+            if "zenmux.ai" in base_url_lower:
+                return "openai/gpt-4o"
+            elif "modelscope" in base_url_lower:
                 return "Qwen/Qwen2.5-72B-Instruct"
             elif "deepseek" in base_url_lower:
                 return "deepseek-chat"
