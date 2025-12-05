@@ -25,7 +25,10 @@ class MemoryTool(Tool):
         user_id: str = "default_user",
         memory_config: MemoryConfig = None,
         memory_types: List[str] = None,
-        expandable: bool = False
+        expandable: bool = False,
+        enable_mem0: bool = False,
+        mem0_client=None,
+        mem0_options: Optional[Dict[str, Any]] = None,
     ):
         super().__init__(
             name="memory",
@@ -43,7 +46,10 @@ class MemoryTool(Tool):
             enable_working="working" in self.memory_types,
             enable_episodic="episodic" in self.memory_types,
             enable_semantic="semantic" in self.memory_types,
-            enable_perceptual="perceptual" in self.memory_types
+            enable_perceptual="perceptual" in self.memory_types,
+            enable_mem0=enable_mem0 or "mem0" in self.memory_types,
+            mem0_client=mem0_client,
+            mem0_options=mem0_options,
         )
 
         # 会话状态
@@ -124,7 +130,7 @@ class MemoryTool(Tool):
             ),
             ToolParameter(name="content", type="string", description="记忆内容（add/update时可用；感知记忆可作描述）", required=False),
             ToolParameter(name="query", type="string", description="搜索查询（search时可用）", required=False),
-            ToolParameter(name="memory_type", type="string", description="记忆类型：working, episodic, semantic, perceptual（默认：working）", required=False, default="working"),
+            ToolParameter(name="memory_type", type="string", description="记忆类型：working, episodic, semantic, perceptual, mem0（默认：working）", required=False, default="working"),
             ToolParameter(name="importance", type="number", description="重要性分数，0.0-1.0（add/update时可用）", required=False),
             ToolParameter(name="limit", type="integer", description="搜索结果数量限制（默认：5）", required=False, default=5),
             ToolParameter(name="memory_id", type="string", description="目标记忆ID（update/remove时必需）", required=False),

@@ -10,6 +10,7 @@ from .types.working import WorkingMemory
 from .types.episodic import EpisodicMemory
 from .types.semantic import SemanticMemory
 from .types.perceptual import PerceptualMemory
+from .mem0 import Mem0Memory
 # 存储和检索功能已被各记忆类型内部实现替代
 
 logger = logging.getLogger(__name__)
@@ -31,7 +32,10 @@ class MemoryManager:
         enable_working: bool = True,
         enable_episodic: bool = True,
         enable_semantic: bool = True,
-        enable_perceptual: bool = False
+        enable_perceptual: bool = False,
+        enable_mem0: bool = False,
+        mem0_client=None,
+        mem0_options: Optional[Dict[str, Any]] = None
     ):
         self.config = config or MemoryConfig()
         self.user_id = user_id
@@ -49,9 +53,17 @@ class MemoryManager:
             
         if enable_semantic:
             self.memory_types['semantic'] = SemanticMemory(self.config)
-            
+
         if enable_perceptual:
             self.memory_types['perceptual'] = PerceptualMemory(self.config)
+
+        if enable_mem0:
+            self.memory_types['mem0'] = Mem0Memory(
+                self.config,
+                user_id=self.user_id,
+                client=mem0_client,
+                client_options=mem0_options,
+            )
         
         logger.info(f"MemoryManager初始化完成，启用记忆类型: {list(self.memory_types.keys())}")
     

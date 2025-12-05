@@ -186,7 +186,7 @@ pip install hello-agents[all]==0.2.0
 
 | 功能组件 | 依赖包 | 说明 |
 |---------|--------|------|
-| **记忆系统** | `qdrant-client`, `neo4j`, `spacy` | Qdrant向量存储、Neo4j图存储、实体识别 |
+| **记忆系统** | `qdrant-client`, `neo4j`, `spacy`, `mem0ai` | Qdrant向量存储、Neo4j图存储、实体识别、Mem0外部记忆服务兼容 |
 | **RAG系统** | `transformers`, `sentence-transformers`, `scikit-learn` | 多语言嵌入模型、智能降级 |
 | **文档处理** | `markitdown`, `pypdf`, `python-docx` | 多格式文档转换与处理 |
 | **多模态** | `torch`, `librosa`（可选） | CLIP/CLAP模型支持 |
@@ -209,6 +209,26 @@ NEO4J_PASSWORD="<your-password>"
 EMBED_MODEL_TYPE="local"  # local/dashscope/tfidf
 EMBED_MODEL_NAME="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 ```
+
+### Mem0.ai 兼容性
+
+如果希望直接复用 Mem0.ai 已有的记忆存储，可启用 `Mem0Memory` 适配层：
+
+```python
+from hello_agents.memory import MemoryManager, MemoryConfig
+
+manager = MemoryManager(
+    config=MemoryConfig(),
+    user_id="demo_user",
+    enable_mem0=True,  # 打开 Mem0 记忆类型
+    mem0_options={"api_key": "<your-mem0-key>"},  # 或者传入自定义 client
+)
+
+manager.add_memory("Mem0 里的第一条记忆", memory_type="mem0", auto_classify=False)
+results = manager.retrieve_memories("第一条记忆", memory_types=["mem0"])
+```
+
+> 📌 提示：未安装 `mem0ai` 时会抛出友好的导入异常，您也可以传入自定义的 `mem0`/`mem0ai` 客户端实例。
 
 安装完成后，您可以直接使用本文档中的所有示例代码。
 
