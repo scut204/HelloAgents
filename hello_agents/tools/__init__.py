@@ -7,6 +7,7 @@ from .registry import ToolRegistry, global_registry
 from .builtin.search_tool import SearchTool
 from .builtin.calculator import CalculatorTool
 from .builtin.memory_tool import MemoryTool
+from .builtin.mem0_tool import Mem0MemoryTool
 from .builtin.rag_tool import RAGTool
 from .builtin.note_tool import NoteTool
 from .builtin.terminal_tool import TerminalTool
@@ -38,6 +39,7 @@ __all__ = [
     "SearchTool",
     "CalculatorTool",
     "MemoryTool",
+    "Mem0MemoryTool",
     "RAGTool",
     "NoteTool",
     "TerminalTool",

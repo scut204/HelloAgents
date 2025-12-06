@@ -18,6 +18,9 @@ tiktoken>=0.5.0
 # spacy>=3.4.0
 # scikit-learn>=1.0.0
 
+# Mem0 AI 记忆系统依赖 - 可选安装: pip install hello-agents[mem0]
+# mem0ai>=0.1.0
+
 # RAG系统依赖 - 可选安装: pip install hello-agents[rag]
 # scikit-learn>=1.0.0
 # transformers>=4.20.0

@@ -42,6 +42,11 @@ memory = [
     "scikit-learn>=1.0.0",       # 机器学习工具
 ]
 
+# Mem0 AI 记忆系统依赖
+mem0 = [
+    "mem0ai>=0.1.0",             # Mem0 AI 记忆管理
+]
+
 # RAG系统依赖
 rag = [
     "scikit-learn>=1.0.0",       # TF-IDF支持
@@ -109,7 +114,7 @@ memory-rag = [
 
 # 全部功能（不含evaluation-bfcl，因其与numpy>=2.0冲突）
 all = [
-    "hello-agents[search,memory-rag,protocols,evaluation,rl]",
+    "hello-agents[search,memory-rag,mem0,protocols,evaluation,rl]",
 ]
 
 [project.urls]
